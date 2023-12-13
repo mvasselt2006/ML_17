@@ -57,5 +57,5 @@ def similarity_ranking(digit):
         print(element)
     print("\n")
 
-for digit in range(10):
-    similarity_ranking(digit)
+# for digit in range(10):
+#     similarity_ranking(digit)
