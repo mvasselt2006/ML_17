@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # load data
-with open('data.txt', 'r') as file:
+with open('../data.txt', 'r') as file:
     dataset = np.array([list(map(int, line.split())) for line in file])
 
 # parition data into training and testing datasets
@@ -35,8 +35,13 @@ def prototype(digit):
     return proto_digit
 
 # compare prototype of digit to a given training sample row via the dot product
-def dotProductCompare(proto_digit, training_digit):
+def dot_prod_compare(proto_digit, training_digit):
     return np.dot(proto_digit, training_digit) / (np.linalg.norm(proto_digit) * np.linalg.norm(training_digit))
+
+# this is similar to dot_prod_compare, used for features_to_csv.py
+def dot_prod_compare_remake(digit, image):
+    proto_digit = prototype(digit)
+    return round(dot_prod_compare(proto_digit, image), 2)
 
 # outputs the similarity of prototype digit with testing data digits
 # training data used to construct prototype
@@ -49,13 +54,15 @@ def similarity_ranking(digit):
     for i in range(10):
         avg = 0
         for j in range(100):
-            avg += dotProductCompare(proto_digit, test_data[100 * i + j])
+            avg += dot_prod_compare(proto_digit, test_data[100 * i + j])
         cosine_similarities.append([i, np.round(avg / 100, 3)])
     
     print(f'Ranked cosine similarities of prototype digit {digit} with testing data:')
-    for element in sorted(cosine_similarities, key=lambda x: x[1], reverse = True):
+    for element in sorted(cosine_similarities, key = lambda x : x[1], reverse = True):
         print(element)
     print("\n")
 
-# for digit in range(10):
-#     similarity_ranking(digit)
+
+if __name__ == "__main__":
+    for digit in range(10):
+        similarity_ranking(digit)

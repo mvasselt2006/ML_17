@@ -1,0 +1,26 @@
+from sklearn.linear_model import LinearRegression
+import numpy as np
+import pandas as pd
+
+# load data frames
+train_df = pd.read_csv("../feats_train.csv")
+test_df = pd.read_csv("../feats_test.csv")
+
+# split data into features and label
+X_train = train_df.iloc[:, :-1]
+y_train = train_df.iloc[:, -1]
+
+X_test = test_df.iloc[:, :-1]
+y_test = test_df.iloc[:, -1]
+
+# train/fit model
+lin_reg_model = LinearRegression()
+lin_reg_model.fit(X_train, y_train)
+
+# use model to predict on test data
+y_pred = np.rint(lin_reg_model.predict(X_test))
+
+print("number of incorrect predictions:", (y_pred != y_test).sum())
+for i in range(10):
+    num_wrong_by_digit = (y_pred[100 * i : 100 * (i + 1)] != y_test[100 * i : 100 * (i + 1)]).sum()
+    print(f"number of inccorect predictions for digit {i}:", num_wrong_by_digit)

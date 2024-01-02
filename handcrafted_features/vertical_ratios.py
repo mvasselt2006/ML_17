@@ -1,7 +1,7 @@
 import numpy as np
 
 # load data
-with open('data.txt', 'r') as file:
+with open('../data.txt', 'r') as file:
     dataset = np.array([list(map(int, line.split())) for line in file])
 
 # parition data into training and testing datasets
