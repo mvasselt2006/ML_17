@@ -9,7 +9,7 @@ def reconstruct_image(grayscale_vector, num, y_pred, j):
 
     image_data = grayscale_vector.reshape((16, 15))
     
-    # plt.title(f"image {num} is mistaken for a {y_pred}, should be {j}")
+    plt.title(f"image {num} is mistaken for a {y_pred}, should be {j}")
     plt.imshow(image_data, cmap='gray')
     plt.axis('off')
     plt.show()

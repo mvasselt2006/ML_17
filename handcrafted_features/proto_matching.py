@@ -1,17 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# load data
-with open('../data.txt', 'r') as file:
-    dataset = np.array([list(map(int, line.split())) for line in file])
-
-# parition data into training and testing datasets
-train_data = np.empty((0, 240))
-test_data  = np.empty((0, 240))
-for i in range(10):
-    train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
-    test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
-
 # resconstruct 16 x 15 image from 240 x 1 graysacle vector
 def reconstruct_image(grayscale_vector):
 
@@ -22,7 +11,7 @@ def reconstruct_image(grayscale_vector):
     plt.show()
 
 # construct prototype digit using mean
-def prototype(digit):
+def prototype(digit, train_data):
     
     proto_digit = np.array([])
     for i in range(240):
@@ -38,17 +27,17 @@ def prototype(digit):
 def dot_prod_compare(proto_digit, training_digit):
     return np.dot(proto_digit, training_digit) / (np.linalg.norm(proto_digit) * np.linalg.norm(training_digit))
 
-# this is similar to dot_prod_compare, used for features_to_csv.py
-def dot_prod_compare_remake(digit, image):
-    proto_digit = prototype(digit)
+# this is similar to dot_prod_compare, just used for features_to_csv.py instead
+def dot_prod_compare_remake(digit, image, train_data):
+    proto_digit = prototype(digit, train_data)
     return round(dot_prod_compare(proto_digit, image), 2)
 
 # outputs the similarity of prototype digit with testing data digits
 # training data used to construct prototype
 # testing data used for comparison
-def similarity_ranking(digit):
+def similarity_ranking(digit, train_data):
     
-    proto_digit = prototype(digit)
+    proto_digit = prototype(digit, train_data)
     reconstruct_image(proto_digit)
     cosine_similarities = []
     for i in range(10):
@@ -64,5 +53,17 @@ def similarity_ranking(digit):
 
 
 if __name__ == "__main__":
+
+    # load data
+    with open('../data.txt', 'r') as file:
+        dataset = np.array([list(map(int, line.split())) for line in file])
+
+    # parition data into training and testing datasets
+    train_data = np.empty((0, 240))
+    test_data  = np.empty((0, 240))
+    for i in range(10):
+        train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
+        test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
+
     for digit in range(10):
         similarity_ranking(digit)

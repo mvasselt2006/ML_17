@@ -30,13 +30,13 @@ def classify(model, raw_or_feats):
     # number of inaccuracies
     print(f"\n\n{model} on {raw_or_feats} data -")
     print("total num. incorrect preds:", (y_pred != y_test).sum())
-    for i in range(10):
-        num_wrong_by_digit = (y_pred[100 * i : 100 * (i + 1)] != y_test[100 * i : 100 * (i + 1)]).sum()
-        print(f"num. inccorect preds for {i}:", num_wrong_by_digit)
+    # for i in range(10):
+    #     num_wrong_by_digit = (y_pred[100 * i : 100 * (i + 1)] != y_test[100 * i : 100 * (i + 1)]).sum()
+    #     print(f"num. inccorect preds for {i}:", num_wrong_by_digit)
     
     # re-execute the function using the features data as well
     if raw_or_feats == 'raw':
-        classify(model, 'feats')
+        classify(model, 'raw_and_feat')
 
 model = LinearRegression()
 classify(model, 'raw')

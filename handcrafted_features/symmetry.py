@@ -1,15 +1,8 @@
+# =============================================================================
+# 
+# =============================================================================
+
 import numpy as np
-
-# load data
-with open('../data.txt', 'r') as file:
-    dataset = np.array([list(map(int, line.split())) for line in file])
-
-# parition data into training and testing datasets
-train_data = np.empty((0, 240))
-test_data  = np.empty((0, 240))
-for i in range(10):
-    train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
-    test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
 
 def vert_symmetry(image):
 
@@ -23,7 +16,7 @@ def vert_symmetry(image):
     difference = np.abs(left_half - flipped_right_half)
     symmetry_score = np.sum(difference)
 
-    return symmetry_score
+    return symmetry_score / 100
 
 def hori_symmetry(image):
 
@@ -37,9 +30,20 @@ def hori_symmetry(image):
     difference = np.abs(top_half - flipped_bottom_half)
     symmetry_score = np.sum(difference)
 
-    return symmetry_score
+    return symmetry_score / 100
 
 if __name__ == "__main__":
+
+    # load data
+    with open('../data.txt', 'r') as file:
+        dataset = np.array([list(map(int, line.split())) for line in file])
+
+    # parition data into training and testing datasets
+    train_data = np.empty((0, 240))
+    test_data  = np.empty((0, 240))
+    for i in range(10):
+        train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
+        test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
     
     averages = []
     for i in range(10):

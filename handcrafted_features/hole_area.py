@@ -6,17 +6,6 @@
 import numpy as np
 import cv2
 
-# load data
-with open('../data.txt', 'r') as file:
-    dataset = np.array([list(map(int, line.split())) for line in file])
-
-# parition data into training and testing datasets
-train_data = np.empty((0, 240))
-test_data  = np.empty((0, 240))
-for i in range(10):
-    train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
-    test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
-
 def hole_area(image):
     
     image = image.reshape((16, 15))
@@ -35,17 +24,31 @@ def hole_area(image):
             hole_area += cv2.contourArea(contours[i])
 
     return round(hole_area, 2)
-    # return hole_area
 
 if __name__ == "__main__":
-    
-    averages = []
+
+    # load data
+    with open('../data.txt', 'r') as file:
+        dataset = np.array([list(map(int, line.split())) for line in file])
+
+    # parition data into training and testing datasets
+    train_data = np.empty((0, 240))
+    test_data  = np.empty((0, 240))
     for i in range(10):
-        avg_hole_area = 0
-        for j in range(100):
-            avg_hole_area += hole_area(train_data[100 * i + j])
-        avg_hole_area /= 100
-        averages.append([i, round(avg_hole_area, 2)])
+        train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
+        test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
     
-    for (digit, avg_hole_area) in sorted(averages, key = lambda x : x[1], reverse = True):
-        print(f"average hole area of {digit}: {avg_hole_area}")
+    for i in range(600, 700):
+        image = test_data[i]
+        print(hole_area(image))
+    
+    # averages = []
+    # for i in range(10):
+    #     avg_hole_area = 0
+    #     for j in range(100):
+    #         avg_hole_area += hole_area(train_data[100 * i + j])
+    #     avg_hole_area /= 100
+    #     averages.append([i, round(avg_hole_area, 2)])
+    
+    # for (digit, avg_hole_area) in sorted(averages, key = lambda x : x[1], reverse = True):
+    #     print(f"average hole area of {digit}: {avg_hole_area}")
