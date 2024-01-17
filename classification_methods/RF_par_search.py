@@ -37,8 +37,9 @@ for i in range(10):
 sizes = np.arange(0.1, .6, .1)
 trees = np.arange(50, 200, 1)
 crits = ['gini', 'entropy', 'log_loss']
+
 for j in range(5):
-    print(f'{j}-th run:')
+    print(f'\nRun n. {j+1}:\n')
     results = []
     multi_score = []
     for i in range(len(crits)):
@@ -51,6 +52,5 @@ for j in range(5):
 
     best_results = max(results, key=lambda x : x[3])
 
-    print('\nMaximum accuracy for multiscore:')
     print(f'criterion: \t{best_results[0]},\nset size: \t{best_results[1]:.2},\nn. of trees: \t{best_results[2]},\nAccuracy: \t{best_results[3]:.3}')
 
