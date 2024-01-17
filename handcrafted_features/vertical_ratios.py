@@ -1,23 +1,26 @@
 # =============================================================================
-#
+# computes the ratio of the sum of pixel values in rows 1, ..., k to the total
+# number of pixels
+# 
+# iterating through k = 1, ..., 16 yields a best case of k = 8
 # =============================================================================
 
 import numpy as np
 
-# returns the vert ratio of a ingle image (input as row vector)
+# returns the vert ratio of a single image (input as row vector)
 # follows the formula used in the example paper
-def vert_ratio_image(image_data, k):
+def vert_ratio_image(image, k):
     
-    image_data = image_data.reshape((16, 15))
+    reshaped_image = image.reshape((16, 15))
     
     ratio_numerator = 0
     for i in range(k):
-        for j in range(15):
-            ratio_numerator += image_data[i][j]
+        ratio_numerator += sum(reshaped_image[i, :])
     
-    return np.round(ratio_numerator / image_data.sum(), 3)
+    return round(ratio_numerator / reshaped_image.sum(), 3)
 
 # returns the average vertical ratio of a set of images
+# used just to check some 
 def avg_vert_ratio(data, k):
     
     avg = 0

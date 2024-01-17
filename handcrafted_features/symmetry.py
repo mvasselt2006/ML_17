@@ -1,9 +1,11 @@
 # =============================================================================
-# 
+# computes the horizontal and vertical symmetry of a given image
 # =============================================================================
 
 import numpy as np
 
+# flip first 7 columns and compute sum of differences between flipped and final
+# 8 columns
 def vert_symmetry(image):
 
     image = image.reshape((16, 15))
@@ -18,6 +20,8 @@ def vert_symmetry(image):
 
     return symmetry_score / 100
 
+# flip first 8 rows and compute sum of differences between flipped and final 8
+# rows
 def hori_symmetry(image):
 
     image = image.reshape((16, 15))
@@ -55,7 +59,6 @@ if __name__ == "__main__":
     
     for (digit, avg_sym_score) in sorted(averages, key = lambda x : x[1], reverse = False):
         print(f"average vertical symmetry score of {digit}: {avg_sym_score}")
-    
     print()
     
     averages = []

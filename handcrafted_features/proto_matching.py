@@ -1,3 +1,9 @@
+# =============================================================================
+# constructs a prototype digit by computing the average image out of a given
+# set (train/test) then one can compute the similarity between a given image
+# and said prototype by computing their dot product
+# =============================================================================
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -35,9 +41,9 @@ def dot_prod_compare_remake(digit, image, train_data):
 # outputs the similarity of prototype digit with testing data digits
 # training data used to construct prototype
 # testing data used for comparison
-def similarity_ranking(digit, train_data):
+def similarity_ranking(digit, data):
     
-    proto_digit = prototype(digit, train_data)
+    proto_digit = prototype(digit, data)
     reconstruct_image(proto_digit)
     cosine_similarities = []
     for i in range(10):
@@ -64,6 +70,7 @@ if __name__ == "__main__":
     for i in range(10):
         train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
         test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
-
+        
+    data = test_data
     for digit in range(10):
-        similarity_ranking(digit)
+        similarity_ranking(digit, data)

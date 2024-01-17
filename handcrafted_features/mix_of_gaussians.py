@@ -1,6 +1,5 @@
 # =============================================================================
-# unsure how to use for lin. regression/random forest as of 02/01/2024
-# but i think this should be useful
+# unused rn
 # =============================================================================
 
 from sklearn.mixture import GaussianMixture
@@ -60,9 +59,12 @@ if __name__ == "__main__":
     
     MOGs = train_individual(train_data)
     
+    res = 0
     for i in range(10):
         count = 0
         for j in range(100):
             image = test_data[100 * i + j]
             count += (classify(image, MOGs) != i)
+        res += count
         print(f"correct classification rate for digit {i}:", (100 - count) / 100)
+    print(res)

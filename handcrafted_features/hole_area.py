@@ -1,6 +1,5 @@
 # =============================================================================
-# calculates the area of any apparent hole in an image
-# seems to distinguish them pretty well
+# calculates the sum of areas of any apparent holes in an image
 # =============================================================================
 
 import numpy as np
@@ -38,17 +37,17 @@ if __name__ == "__main__":
         train_data = np.vstack((train_data, dataset[200 * i : 200 * i + 100]))
         test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
     
-    for i in range(600, 700):
-        image = test_data[i]
-        print(hole_area(image))
+    # for i in range(800, 900):
+    #     image = test_data[i]
+    #     print(hole_area(image))
     
-    # averages = []
-    # for i in range(10):
-    #     avg_hole_area = 0
-    #     for j in range(100):
-    #         avg_hole_area += hole_area(train_data[100 * i + j])
-    #     avg_hole_area /= 100
-    #     averages.append([i, round(avg_hole_area, 2)])
+    averages = []
+    for i in range(10):
+        avg_hole_area = 0
+        for j in range(100):
+            avg_hole_area += hole_area(train_data[100 * i + j])
+        avg_hole_area /= 100
+        averages.append([i, round(avg_hole_area, 2)])
     
-    # for (digit, avg_hole_area) in sorted(averages, key = lambda x : x[1], reverse = True):
-    #     print(f"average hole area of {digit}: {avg_hole_area}")
+    for (digit, avg_hole_area) in sorted(averages, key = lambda x : x[1], reverse = True):
+        print(f"average hole area of {digit}: {avg_hole_area}")
