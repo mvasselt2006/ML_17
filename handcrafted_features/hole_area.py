@@ -7,19 +7,17 @@ import cv2
 
 def hole_area(image):
     
-    image = image.reshape((16, 15))
-    image = np.uint8(image)
+    # reshape then binarise image: >=1s become 1s, 0s remain 0s
+    image = image.reshape((16, 15))    
+    image = np.where(image > 0, 1, 0).astype(np.uint8)
+    
+    # explore for contours
+    contours, hierarchy = cv2.findContours(image, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 
-    # Threshold the image to get a binary image
-    _, thresh = cv2.threshold(image, 1, 255, cv2.THRESH_BINARY)
-
-    # Find contours
-    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Calculate the area of holes
+    # compute area of contours
     hole_area = 0
     for i, h in enumerate(hierarchy[0]):
-        if h[3] != -1:  # Has parent
+        if h[3] != -1:
             hole_area += cv2.contourArea(contours[i])
 
     return round(hole_area, 2)

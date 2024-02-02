@@ -7,16 +7,16 @@ import numpy as np
 
 def HoG_descriptor(image):
     
-    image = image.reshape((16, 15))
-    image = cv2.normalize(image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-
+    # reshape into matrix and pixel value type
+    image = image.reshape((16, 15)).astype(np.uint8)
+    
     # parameters
-    cell_size  = (6, 6)
-    block_size = (2, 2)
+    cell_size  = (5, 5)
+    block_size = (3, 3)
     nbins = 9
     
     # HoG size is based on size of image
-    h, w = image.shape
+    h, w = 16, 15
     
     # initialise HoG
     hog = cv2.HOGDescriptor(_winSize=(w // cell_size[1] * cell_size[1] ,
@@ -27,11 +27,7 @@ def HoG_descriptor(image):
                             _cellSize=(cell_size[1], cell_size[0])     ,
                             _nbins=nbins)
     
-    # compute and reshape HoG
-    hog_descriptor = hog.compute(image)
-    hog_descriptor = hog_descriptor.flatten()
-    
-    return hog_descriptor
+    return np.round(hog.compute(image), 3)
 
 if __name__ == "__main__":
 
@@ -47,4 +43,4 @@ if __name__ == "__main__":
         test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
         
     image = train_data[0]
-    print(len(HoG_descriptor(image)))
+    print(HoG_descriptor(image))

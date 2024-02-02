@@ -147,12 +147,12 @@ if __name__ == "__main__":
     
     epochs_max = 55
     
-    # ten-fold cross-validation
-    cross_validate(10, X_train, y_train, X_test, y_test, epochs_max)
+    # # ten-fold cross-validation
+    # cross_validate(10, X_train, y_train, X_test, y_test, epochs_max)
     
-    # # individual instance
-    # classifier = svm_classifier(X_train, y_train,
-    #                             X_test, y_test, epochs_max)
-    # X_train_enc = classifier.autoencode()
-    # print(classifier.assess_pred(X_train_enc, y_test))
+    # individual instance
+    classifier = svm_classifier(X_train, y_train,
+                                X_test, y_test, epochs_max)
+    X_train_enc = classifier.autoencode()
+    print(classifier.assess_pred(X_train_enc, y_test))
     

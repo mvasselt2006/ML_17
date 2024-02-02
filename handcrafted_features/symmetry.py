@@ -13,7 +13,7 @@ def vert_symmetry(image):
     # split image into left and right halves
     left_half = image[:, :7]
     right_half = image[:, 8:]
-
+    
     flipped_right_half = np.fliplr(right_half)
     difference = np.abs(left_half - flipped_right_half)
     symmetry_score = np.sum(difference)

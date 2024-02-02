@@ -5,17 +5,20 @@
 import numpy  as np
 import pandas as pd
 import sys
+import warnings
+
+# just to silence a specific warning that clogs the output console
+warnings.filterwarnings('ignore', category=pd.errors.PerformanceWarning)
 
 # needed to import the inclded handcrafted features while in this directory
 sys.path.append('./handcrafted_features')
 
 from gabor_filter    import gabor_features
-from HoGs import hog_descriptor
+from HoGs            import HoG_descriptor
 from hole_area       import hole_area
 from proto_matching  import dot_prod_compare_remake
 from row_col_count   import col_count_nonzero, row_count_nonzero
 from row_col_sum     import col_count_sum, row_count_sum
-from symmetry        import hori_symmetry, vert_symmetry
 from vertical_ratios import vert_ratio_image
 
 # extract train data
@@ -44,15 +47,11 @@ def get_data_frames(train_data, test_data):
         df_train.loc[i, 'hole_area'] = hole_area(train_image)
         df_test.loc[i, 'hole_area']  = hole_area(test_image)
         
-        # include symmetry feature (horizontal)
-        df_train.loc[i, 'hor_sym'] = hori_symmetry(train_image)
-        df_test.loc[i, 'hor_sym']  = hori_symmetry(test_image)
+        # include vertical ratio feature with k = 3
+        df_train.loc[i, 'vert_ratio'] = vert_ratio_image(train_image, 3)
+        df_test.loc[i, 'vert_ratio']  = vert_ratio_image(test_image, 3)
         
-        # include symmetry feature (vertical)
-        df_train.loc[i, 'vert_sym'] = vert_symmetry(train_image)
-        df_test.loc[i, 'vert_sym']  = vert_symmetry(test_image)
-        
-        # include vertical ratio feature
+        # include vertical ratio feature with k = 8
         df_train.loc[i, 'vert_ratio'] = vert_ratio_image(train_image, 8)
         df_test.loc[i, 'vert_ratio']  = vert_ratio_image(test_image, 8)
         
@@ -84,8 +83,8 @@ def get_data_frames(train_data, test_data):
             df_test.loc[i, f'gabor_{j}']  = gabor_test[j]
             
         # include hog descriptor feature
-        hog_descriptor_train = hog_descriptor(train_image)
-        hog_descriptor_test  = hog_descriptor(test_image)
+        hog_descriptor_train = HoG_descriptor(train_image)
+        hog_descriptor_test  = HoG_descriptor(test_image)
         for j in range(36):
             df_train.loc[i, f'hog_descriptor_{j}'] = hog_descriptor_train[j]
             df_test.loc[i, f'hog_descriptor_{j}']  = hog_descriptor_test[j]
