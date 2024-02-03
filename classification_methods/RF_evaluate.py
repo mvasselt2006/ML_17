@@ -31,7 +31,7 @@ def assess_pred(model, data_form):
 avg_raw  = 0
 avg_feat = 0
 avg_both = 0
-n = 100
+n = 10
 for i in range(n):
     model = RandomForestClassifier()
     avg_raw  += assess_pred(model, 'raw')           # best ~31
