@@ -30,16 +30,19 @@ with open("feats_train.csv") as f:
 # visualize similarity to 0 in a scatter plot
 def scatter(name, featid):
     for i in range(10):
-        data = X_test[y_test == i]
-        plt.scatter(data[:, columns[featid]], y_test[y_test == i], label=str(i))
+        data = X_train[y_train == i]
+        plt.scatter(data[:, columns[featid]], np.arange(0, 100) + (100 * i), label=str(i))
 
     plt.xlabel(name)
-    plt.ylabel("Digit")
+    plt.ylabel("Digit index")
     plt.legend()
     plt.show()
 
-#scatter("Similarity with 0", "sim. with 0")
+scatter("Similarity with the prototype for the digit 0", "sim. with 0")
+scatter("Similarity with the prototype for the digit 1", "sim. with 1")
+scatter("Vertical ratio at k=8", "vert_ratio")
 #scatter("Gabor 2", "gabor_2")
+scatter("Hole area", "hole_area")
 
 # second test task: x axis: similarity with 0, y axis: how frequently it happens per class as a stackplot
 # Kernel Density estimation for smoothness, so no ugly blocky histograms
