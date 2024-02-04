@@ -5,6 +5,8 @@
 from PIL import Image
 import numpy as np
 from skimage.transform import AffineTransform, warp
+import pandas as pd
+
 
 # =====================================
 # rotation
@@ -83,3 +85,48 @@ def amplify_greyscale(image, intensity_factor):
     output_image = np.clip(intensity_scaled_image, 0, 6)
 
     return output_image
+
+
+if __name__ =="__main__":
+    # load data frames
+    # load data frames
+    train_df = pd.read_csv("raw_train.csv")
+    
+    # split training data into features and label
+    train_images = train_df.iloc[:, :-1]
+    train_labels = train_df.iloc[:, -1]
+
+    train_images = train_images.to_numpy()
+    train_labels = train_labels.to_numpy()
+    train_data= train_df.to_numpy()
+
+    #Check rotations against eachother
+    labels1 =train_labels
+    labels2 = np.zeros((2000,))
+    labels2[:1000,]=train_labels
+    labels2[1000:,]=train_labels
+    rot = [25]
+    for x in rot:
+        print(x)
+        rot1 = np.zeros((4000,240))
+        for i  in range(1000):
+            in1,in2 = np.random.randint(1,x,2)
+            rot1[i,:]= rotate_clockwise(train_images[i], in1).reshape(240)
+            rot1[i+1000,:]= rotate_anti_clockwise(train_images[i], in1).reshape(240)
+            rot1[i+2000,:]= rotate_clockwise(train_images[i], in2).reshape(240)
+            rot1[i+3000,:]= rotate_anti_clockwise(train_images[i], in2).reshape(240)
+        datafile= np.zeros((5000,241))
+        datafile[:1000,:]= train_data
+        datafile[1000:,:-1]= rot1
+        datafile[1000:3000,-1]= labels2
+        datafile[3000:,-1]= labels2
+        datafile= pd.DataFrame(datafile)
+        datafile.to_csv(f"rot_upto{x}.csv",index=False)
+
+    
+
+
+
+
+
+
