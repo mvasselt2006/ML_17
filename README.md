@@ -22,6 +22,10 @@ First, ensure that the path of your Python environment is that of the root direc
 
 `....py`: ?
 
+- `RF_evaluate.py`: evaluates the performance of a random forest on the raw data, features data and the concatenation of the raw and feature data (raw | features) and performs the search for the best values for the parameters. Saves the result in `search_results.txt`. The full search takes about 15 minutes on average machines.
+
+- `RF_par_search.py`: prints and plots the results of the RF classification from `search_results.txt`.
+
 - `CNN.py`:
 Dependancies on: TensorFlow, scikit-learn along with a few standard ones
 
