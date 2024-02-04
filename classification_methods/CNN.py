@@ -80,7 +80,7 @@ def CNN2():
     CNN.summary()
     return CNN
 
-def CNN4():
+def CNN3():
     CNN = models.Sequential()
     CNN.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(16, 15, 1), padding='same'))
     CNN.add(layers.Conv2D(32, (7, 7), activation='relu', padding='same'))
@@ -98,20 +98,6 @@ def CNN4():
     CNN.summary()
     return CNN
 
-def CNN3():
-    CNN = tf.keras.Sequential()
-    CNN.add(tf.keras.layers.Conv2D(filters=64, kernel_size=(3, 3), activation=tf.keras.activations.relu,
-                                   input_shape=(16, 15, 1), padding="same"))
-    CNN.add(tf.keras.layers.Conv2D(filters=64, kernel_size=(5, 5), activation=tf.keras.activations.relu,
-                                   padding="same"))
-    CNN.add(tf.keras.layers.Conv2D(filters=128, kernel_size=(7, 7), activation=tf.keras.activations.relu,
-                                   padding="same"))
-    CNN.add(tf.keras.layers.Flatten())
-    #CNN.add(tf.keras.layers.Dense(20))
-    CNN.add(tf.keras.layers.Dense(10, activation=tf.keras.activations.softmax))
-    CNN.compile(optimizer="adam", loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                metrics=tf.keras.metrics.SparseCategoricalAccuracy(name='accuracy'))
-    return CNN
 
 def training(train_dat,train_label, test_dat, test_label,epoch):
     """Trains the model with the training data. To change which model to run this
