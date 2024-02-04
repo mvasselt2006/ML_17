@@ -2,6 +2,10 @@
 # =============================================================================
 # evaluates kNN on the data sets feature, raw and combined
 # evaluates different kNN (inspired) options
+# 
+# Usage: ./kNN.py while in the classification_methods subfolder
+# Relies on the assumption that ../X_train.csv and ../X_test.csv exist for all X in {"feats", "raw", "raw_and_feats"} with up to date raw and feature data
+# 
 # =============================================================================
 
 from sklearn.neighbors import *
