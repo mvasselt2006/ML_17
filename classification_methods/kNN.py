@@ -8,9 +8,17 @@ from sklearn.neighbors import *
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
-def assess_pred(data_form, n_neighbors = 5, weights = "uniform", p=2):
+def give_knn(n=5, w="uniform", p=2):
+    return lambda _ : (KNeighborsClassifier(n_neighbors = n, weights = w, p=p),
+                       f"kNN k: {n} distance: {w} p: {p}")
+
+def give_nearest_centroid():
+    return lambda _ : (NearestCentroid(metric="euclidean"),
+                       f"nearest centroid")
+
+def assess_pred(data_form, model):
     
-    model = KNeighborsClassifier(n_neighbors = n_neighbors, weights=weights, p=p)
+    model, text = model(0)
 
     # load data frames
     train_df = np.loadtxt(f"../{data_form}_train.csv", delimiter = ",", skiprows=1)
@@ -40,14 +48,18 @@ def assess_pred(data_form, n_neighbors = 5, weights = "uniform", p=2):
     misclassifications = (y_pred != y_test).sum()
     datalen = len(y_test)
 
-    print(f"kNN data: {data_form} k: {n_neighbors} weights: {weights} p: {p} misclassified: {misclassifications}/{datalen}")
+    print(f"data: {data_form} {text} misclassified: {misclassifications}/{datalen}")
 
 datasets = ["raw", "feats", "raw_and_feats"]
 distances = ["uniform", "distance"]
 
-for n_neighbors in range(3,9):
-    for dataset in datasets:
+
+
+for dataset in datasets:
+    assess_pred(dataset, give_nearest_centroid())
+    for n_neighbors in range(3,9):
         for distance in distances:
             for p in [2]:
-                assess_pred(dataset, n_neighbors, distance, p)
+                assess_pred(dataset, give_knn(n_neighbors, distance, p))
+
 
