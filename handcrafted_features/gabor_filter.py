@@ -5,15 +5,14 @@
 import cv2
 import numpy as np
 
-def apply_gabor_filter(image, kernel_size=10, sigma=2.0, theta=0, lambd=10.0, gamma=0.5, psi=0):
+def apply_gabor_filter(image, kernel_size=10, sigma=2.0, theta=0, lamda=10.0, gamma=0.5, psi=0):
     
     # generate 11 by 11 Gabor kernel (just a matrix based on parameteres)
-    kernel = cv2.getGaborKernel((kernel_size, kernel_size), sigma, theta, lambd, gamma, psi, ktype=cv2.CV_32F)
+    kernel = cv2.getGaborKernel((kernel_size, kernel_size), sigma, theta, lamda, gamma, psi, ktype=cv2.CV_32F)
 
-    # print(np.shape(kernel))
-    # print(kernel)
-    # print()
-    # print(np.shape(kernel))
+    print(np.shape(kernel))
+    print(kernel)
+    print()
     
     filtered_image = cv2.filter2D(image, -1, kernel)
     
@@ -57,5 +56,5 @@ if __name__ == "__main__":
         
     image = test_data[200]
     features = gabor_features(image)
-    print(features)
+    # print(features)
     
