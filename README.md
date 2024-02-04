@@ -10,6 +10,7 @@ To use these programs, you need Python installed on your machine along with a se
 - NumPy
 - Pandas
 - scikit-learn
+- matplotlib
 
 Note that there are far more libraries than only these. Each program begins by indicating the dependencies, if any.
 
