@@ -33,8 +33,6 @@ class_names = [0,1,2,3,4,5,6,7,8,9]
 #     img= np.array(train_images.iloc[100*i,:])
 #     print(img)
 #     plt.imshow(img.reshape((16,15)))
-#     # The CIFAR labels happen to be arrays, 
-#     # which is why you need the extra index
 #     plt.xlabel(class_names[train_labels[i*100]])
 # plt.show()
 
