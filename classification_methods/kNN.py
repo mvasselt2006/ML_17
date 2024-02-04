@@ -7,8 +7,6 @@
 from sklearn.neighbors import *
 from sklearn.preprocessing import StandardScaler
 
-from mlxtend.plotting import plot_decision_regions
-
 import numpy as np
 import matplotlib.pyplot as plt
 
