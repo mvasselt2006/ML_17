@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def give_knn(n=5, w="uniform", p=2):
-    return lambda _ : (KNeighborsClassifier(n_neighbors = n, weights = w, p=p),
+    return lambda _ : (KNeighborsClassifier(n_neighbors = n, weights = w, p=p, algorithm="brute"),
                        f"kNN k: {n} distance: {w} p: {p}")
 
 def give_nearest_centroid():
@@ -52,17 +52,45 @@ def assess_pred(data_form, model):
     misclassifications = (y_pred != y_test).sum()
     datalen = len(y_test)
 
-    print(f"data: {data_form} {text} misclassified: {misclassifications}/{datalen}")
+    error = (1 - misclassifications / datalen) * 100
+
+    print(f"data: {data_form} {text} error: {error}")
+    return error
 
 datasets = ["raw", "feats", "raw_and_feats"]
-distances = ["uniform", "distance"]
 
-for dataset in datasets:
-    assess_pred(dataset, give_nearest_centroid())
-    for n_neighbors in range(3,9):
-        for distance in distances:
-            for p in [2]:
-                assess_pred(dataset, give_knn(n_neighbors, distance, p))
+n_x = np.arange(1, 10, 1)
+raw_y = []
+feats_y = []
+combined_y = []
+# uniform
+uraw_y = []
+ufeats_y = []
+ucombined_y = []
+
+for n_neighbors in n_x:
+    # p didn't have a large effect on accuracy but it was slow when p > 2
+    # distance as weight function is superior to uniform
+    w = "distance"
+    raw_y.append(assess_pred("raw", give_knn(n_neighbors, w, 2)))
+    feats_y.append(assess_pred("feats", give_knn(n_neighbors, w, 2)))
+    combined_y.append(assess_pred("raw_and_feats", give_knn(n_neighbors, w, 2)))
+    w = "uniform" 
+    uraw_y.append(assess_pred("raw", give_knn(n_neighbors, w, 2)))
+    ufeats_y.append(assess_pred("feats", give_knn(n_neighbors, w, 2)))
+    ucombined_y.append(assess_pred("raw_and_feats", give_knn(n_neighbors, w, 2)))
+    
+plt.title(f"Finding the best k to use in kNNs")
+plt.plot(n_x, combined_y, "g-", label="R+HF data (distance)")
+plt.plot(n_x, ucombined_y, "g--", label="R+HF data (uniform)")
+plt.plot(n_x, feats_y, "y-", label="Handcrafted features data (distance)")
+plt.plot(n_x, ufeats_y, "y--", label="Handcrafted features data (uniform)")
+plt.plot(n_x, raw_y, "b-", label="Raw data (distance)")
+plt.plot(n_x, uraw_y, "b--", label="Raw data (uniform)")
+plt.xlabel("k")
+plt.ylabel("Accuracy (%)")
+plt.legend()
+plt.show()
 
 # just trying NCA out too, mostly to generate plots
 
