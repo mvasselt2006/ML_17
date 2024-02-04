@@ -27,13 +27,19 @@ with open("feats_train.csv") as f:
     for i in range(len(column_list)):
         columns[column_list[i]] = i
 
-# first test task: visualize similarity to 0 and 1 in a scatter plot
-def first():
+# visualize similarity to 0 in a scatter plot
+def scatter(name, featid):
     for i in range(10):
         data = X_test[y_test == i]
-        plt.scatter(data[:, columns["sim. with 0"]], data[:, columns["sim. with 1"]], label=str(i))
+        plt.scatter(data[:, columns[featid]], y_test[y_test == i], label=str(i))
+
+    plt.xlabel(name)
+    plt.ylabel("Digit")
     plt.legend()
     plt.show()
+
+#scatter("Similarity with 0", "sim. with 0")
+scatter("Gabor 2", "gabor_2")
 
 # second test task: x axis: similarity with 0, y axis: how frequently it happens per class as a stackplot
 # Kernel Density estimation for smoothness, so no ugly blocky histograms
@@ -64,4 +70,6 @@ def feature_stackplot(name, featid, bandwidth=0.02, kernel_type="gaussian"):
 #feature_stackplot("Hole area", "hole_area", 5, "gaussian")
 #feature_stackplot("Column count 8", "col_count_8", 1, "gaussian")
 #feature_stackplot("Column sum 8", "col_sum_8", 5, "gaussian")
-feature_stackplot("Vertical ratio", "vert_ratio", 0.01, "gaussian")
+#feature_stackplot("Vertical ratio", "vert_ratio", 0.01, "gaussian")
+#feature_stackplot("HOG 11", "hog_descriptor_11", 0.005, "gaussian")
+feature_stackplot("Gabor 2", "gabor_2", 1, "gaussian")
