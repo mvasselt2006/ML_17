@@ -1,56 +1,43 @@
+# =============================================================================
+# prints and plots the results of the RF classification from RF_evaluate.py
+# =============================================================================
+
 import numpy as np
-
-from sklearn.ensemble import RandomForestClassifier
-
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-
 import matplotlib.pyplot as plt
 
-import os
+# Load the results
+data = np.loadtxt('search_results.txt', dtype=str, delimiter=',')
 
-def OurRandomForest(data, labels, criterion, train_size, random_seed, n_trees):
-    # Splits the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(data, labels, train_size=train_size, random_state=random_seed)
+# Transforms strings to floats
+numbers = np.array([[col[-3], col[-2], col[-1]] for col in data], dtype = float)
 
-    # Initialize the Random Forest Classifier
-    rf_classifier = RandomForestClassifier(n_estimators=n_trees, criterion= criterion, random_state=random_seed)
+# RAW print
+maxraw = np.max(numbers[:,0])
+maxraw_indices = np.transpose(np.where(numbers[:,0] == maxraw))
+maxraw_values = [[data[index[0],0], data[index[0],1], data[index[0],2]] for index in maxraw_indices]
+print(f'RAW: Max accuracy = {maxraw:.3f} reached for (n_estimators, min_splits, max_features) = {maxraw_values}.')
 
-    # Train the classifier
-    rf_classifier = rf_classifier.fit(X_train, y_train)
+# FEATS print
+maxfeats = np.max(numbers[:,1])
+maxfeats_indices = np.transpose(np.where(numbers[:,1] == maxfeats))
+maxfeats_values = [[data[index[0],0], data[index[0],1], data[index[0],2]] for index in maxfeats_indices]
+print(f'FEATS: Max accuracy = {maxfeats:.3f} reached for (n_estimators, min_splits, max_features) = {maxfeats_values},')
 
-    # Predict on the test set
-    predictions = rf_classifier.predict(X_test)
+# RAW + FEATS print
+maxrPf = np.max(numbers[:,2])
+maxrPf_indices = np.transpose(np.where(numbers[:,2] == maxrPf))
+maxrPf_values = [[data[index[0],0], data[index[0],1], data[index[0],2]] for index in maxrPf_indices]
+print(f'RAW + FEATS: Max accuracy = {maxrPf:.3f} reached for (n_estimators, min_splits, max_features) = {maxrPf_values}.')
 
-    # Calculate accuracy
-    accuracy = accuracy_score(y_test, predictions)
-    return accuracy
-
-random_seed = None
-
-data = np.loadtxt('data.txt')
-labels = np.zeros(2000)
-for i in range(10):
-    labels[i*200:i*200+200] = i
-
-sizes = np.arange(0.1, .6, .1)
-trees = np.arange(50, 200, 1)
-crits = ['gini', 'entropy', 'log_loss']
-
-for j in range(5):
-    print(f'\nRun n. {j+1}:\n')
-    results = []
-    multi_score = []
-    for i in range(len(crits)):
-        #print(f'Evaluating criterion {crits[i]}...')
-        for size in sizes:
-            #print(f'Evaluating size {size}...')
-            for tree in trees:
-                multi_score.append(OurRandomForest(data, labels, crits[i], size, random_seed, tree))
-                results.append((crits[i],size, tree, multi_score[-1]))
-
-    best_results = max(results, key=lambda x : x[3])
-
-    print(f'criterion: \t{best_results[0]},\nset size: \t{best_results[1]:.2},\nn. of trees: \t{best_results[2]},\nAccuracy: \t{best_results[3]:.3}')
-
+# Plot of the search for the best number of trees given best min_sample_split and max_features
+# Ugly but works 
+plt.plot(data[543:724,0], numbers[543:724,0], label='Raw Pixel')
+plt.plot(data[543:724,0], numbers[543:724,1], label='Handcrafted features')
+plt.plot(data[1087:1267,0], numbers[1087:1267,2], label='RP + HF')
+plt.xticks(data[:181,0][0::20])
+plt.xlabel('Number of trees')
+plt.ylabel('Accuracy score')
+plt.title('Search for best number of trees\n')
+plt.grid()
+plt.legend()
+plt.show()
