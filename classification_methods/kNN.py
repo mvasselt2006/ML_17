@@ -97,7 +97,8 @@ def assess_nca(data_form):
     X_nca_test = nca.transform(X_test_scaled)
 
     # only for graphing the decision plot_decision_regions
-    # todo problem: this graphs NCA decision regions, not normal kNN
+    # todo problem: this graphs NCA decision regions = kNN trained on dimension
+    # reduced data, not the original kNN model
     knn = KNeighborsClassifier(n_neighbors = 5, weights = "distance", p=2)
     knn.fit(X_nca, y_train)
 
