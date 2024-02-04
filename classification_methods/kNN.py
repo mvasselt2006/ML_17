@@ -16,8 +16,16 @@ def give_knn(n=5, w="uniform", p=2):
     return lambda _ : (KNeighborsClassifier(n_neighbors = n, weights = w, p=p, algorithm="brute"),
                        f"kNN k: {n} distance: {w} p: {p}")
 
-def assess_pred(data_form, model):
-    
+def weight_scale_features(data, weight):
+    raw = data[:, :239]
+    feats = data[:, 240:]
+    feats = feats * weight
+    data = np.concatenate((raw, feats), axis=1) 
+    return data
+
+def assess_pred(data_form, model, weight=1.0):
+    # weight: if different than 1, after scaling it will multiply the values in columns beyond column 240 by the value
+
     model, text = model(0)
 
     # load data frames
@@ -39,6 +47,10 @@ def assess_pred(data_form, model):
 
     X_test_scaled = scaler.transform(X_test)
 
+    if weight != 1.0:
+        X_scaled = weight_scale_features(X_scaled, weight)
+        X_test_scaled = weight_scale_features(X_test_scaled, weight)
+
     # train/fit model
     model.fit(X_scaled, y_train)
 
@@ -50,7 +62,7 @@ def assess_pred(data_form, model):
 
     error = (1 - misclassifications / datalen) * 100
 
-    print(f"data: {data_form} {text} error: {error}")
+    print(f"data: {data_form} w={weight} {text} error: {error}")
     return error
 
 # k values
@@ -88,3 +100,14 @@ plt.ylabel("Accuracy (%)")
 plt.legend()
 plt.show()
 
+# bonus / not in report / relative importance of features vs raw data in the feat + raw dataset is examined
+weights = np.arange(0, 3.0, 0.1)
+ys = []
+for weight in weights:
+    ys.append(assess_pred("raw_and_feats", give_knn(3, "distance", 2), weight))
+
+plt.plot(weights, ys)
+
+plt.legend()
+plt.show()
+    
