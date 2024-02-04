@@ -1,16 +1,19 @@
 # Handwritten digit classification
 
+## Note: the data sets included here are small. No need to worry about the inclusion of bloated data sets.
+
 ## Overview:
 This repository contains implementations of kNN, Random Forest, CNN and autoencoding-paired SVM approaches to a multiclass classification task pertaining to handwritten digit.
 
 ## Dependencies:
-To use these programs, you need Python installed on your machine along with the following libraries:
+To use these programs, you need Python installed on your machine along with a series of libraries including:
 - NumPy
 - Pandas
 - scikit-learn
-- many more
 
-Install each using pip by running `pip install <name of library>`.
+Note that there are far more libraries than only these. Each program begins by indicating the dependencies, if any.
+
+Installing each library can be done using pip by running `pip install <name of library>`.
 
 ## How to run:
 First, ensure that the path of your Python environment is that of the root directory of this repository. Each classification method is contained in the `classification_methods` directory.

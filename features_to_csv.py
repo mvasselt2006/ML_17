@@ -48,12 +48,12 @@ def get_data_frames(train_data, test_data):
         df_test.loc[i, 'hole_area']  = hole_area(test_image)
         
         # include vertical ratio feature with k = 3
-        df_train.loc[i, 'vert_ratio'] = vert_ratio_image(train_image, 3)
-        df_test.loc[i, 'vert_ratio']  = vert_ratio_image(test_image, 3)
+        df_train.loc[i, 'vert_ratio_3'] = vert_ratio_image(train_image, 3)
+        df_test.loc[i, 'vert_ratio_3']  = vert_ratio_image(test_image, 3)
         
         # include vertical ratio feature with k = 8
-        df_train.loc[i, 'vert_ratio'] = vert_ratio_image(train_image, 8)
-        df_test.loc[i, 'vert_ratio']  = vert_ratio_image(test_image, 8)
+        df_train.loc[i, 'vert_ratio_8'] = vert_ratio_image(train_image, 8)
+        df_test.loc[i, 'vert_ratio_8']  = vert_ratio_image(test_image, 8)
         
         # include column count feature
         for j in range(15):

@@ -13,7 +13,7 @@ def HoG_descriptor(image):
     # parameters
     cell_size  = (6, 6)
     block_size = (2, 2)
-    nbins = 9
+    nbins = 10
     
     # HoG size is based on size of image
     h, w = 16, 15
@@ -43,4 +43,5 @@ if __name__ == "__main__":
         test_data  = np.vstack((test_data , dataset[200 * i + 100 : 200 * i + 200]))
         
     image = train_data[0]
+    print(HoG_descriptor(image))
     print(len(HoG_descriptor(image)))
