@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # =============================================================================
 # The goal of this is to visualize the features for the report
+#
+# Usage: ./visualize.py in the root folder in this project to preview visualizations
+# This script relies on the assumption that feats_train.csv exists and contains the relevant feature data
+# Configuring which graphs get displayed is done through editing the code (see many lines are commented)
 # =============================================================================
 
 import numpy as np
@@ -38,10 +42,10 @@ def scatter(name, featid):
     plt.legend()
     plt.show()
 
+# used in the report:
 scatter("Similarity with the prototype for the digit 0", "sim. with 0")
 scatter("Similarity with the prototype for the digit 1", "sim. with 1")
 scatter("Vertical ratio at k=8", "vert_ratio")
-#scatter("Gabor 2", "gabor_2")
 scatter("Hole area", "hole_area")
 
 # second test task: x axis: similarity with 0, y axis: how frequently it happens per class as a stackplot
@@ -70,12 +74,9 @@ def feature_stackplot(name, featid, bandwidth=0.02, kernel_type="gaussian"):
     plt.legend()
     plt.show()
 
-# currently used in report:
-feature_stackplot("Prototype 0 similarity", "sim. with 0", 0.015, "gaussian")
-feature_stackplot("Prototype 1 similarity", "sim. with 1", 0.015, "gaussian")
-feature_stackplot("Vertical ratio", "vert_ratio", 0.015, "gaussian")
-
-# not used (yet? idk):
+#feature_stackplot("Prototype 0 similarity", "sim. with 0", 0.015, "gaussian")
+#feature_stackplot("Prototype 1 similarity", "sim. with 1", 0.015, "gaussian")
+#feature_stackplot("Vertical ratio", "vert_ratio", 0.015, "gaussian")
 #feature_stackplot("Hole area", "hole_area", 5, "gaussian")
 #feature_stackplot("Column count 8", "col_count_8", 1, "gaussian")
 #feature_stackplot("Column sum 8", "col_sum_8", 5, "gaussian")
